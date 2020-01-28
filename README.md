@@ -1,9 +1,16 @@
-# GO初探
+# GO Study 2020
 
 #### 基本操作
-- .go文件必须放在一个main的文件夹下才能运行
-    > eg.src/main/hello.go
-- import "fmt" 注意双引号
+- 简单可执行Demo
+```go
+package main
+
+import "fmt"
+
+func main() {
+    fmt.Printf("hello world!")
+}
+```
 
 - Go环境配置
     - GOROOT: golang安装目录
