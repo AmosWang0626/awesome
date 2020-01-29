@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"main/utils"
+)
 
 type subject struct {
 	id   int
@@ -21,4 +24,6 @@ func main() {
 
 	subj := subject{1, "world"}
 	fmt.Printf("subj.name=%s\n", subj.name)
+
+	fmt.Println(utils.DefaultPassword, utils.ProjectName, utils.Version)
 }
