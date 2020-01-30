@@ -4,6 +4,39 @@ import "fmt"
 
 func main() {
 
+	expression1()
+
+	strs := [...]string{"123", "456"}
+	for m := 0; m < len(strs); m++ {
+		fmt.Print(strs[m] + "\t")
+	}
+	fmt.Println()
+
+	nums := [...]int{11, 12, 13, 14}
+	fmt.Println(nums)
+	nums[2] = 12
+	fmt.Println(nums)
+
+	fmt.Println("..........................")
+
+	nums2 := [...]int{11, 12, 13, 14}
+	fmt.Println(nums2)
+	expression2(&nums2)
+	fmt.Println(nums2)
+
+	nums3 := [...]int{11, 12, 13, 14}
+	// 含头不含尾
+	fmt.Println(nums3[1:2])
+	fmt.Println(len(nums3[1:2]))
+	fmt.Println(cap(nums3[1:2]))
+
+}
+
+func expression2(arr *[4]int) {
+	(*arr)[2] = 88
+}
+
+func expression1() {
 	if i := 1; i >= 1 {
 		fmt.Println("[i := 1; i >= 1] always true")
 	}
@@ -80,5 +113,4 @@ func main() {
 		fmt.Printf("[%d=%c] \t", index, val)
 	}
 	fmt.Println()
-
 }
