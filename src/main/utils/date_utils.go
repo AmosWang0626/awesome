@@ -7,6 +7,7 @@ import (
 
 var Year2Day = "yyyy-MM-dd"
 var Year2Second = "yyyy-MM-dd hh:mm:ss"
+var Hour2Second = "hh:mm:ss"
 
 /**
  * base date 2006/01/02 15:04:05
