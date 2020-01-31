@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"amos.wang/awesome/src/main/utils"
+	"fmt"
+)
 
 func main() {
 
@@ -18,7 +21,9 @@ func main() {
 	fmt.Printf("[num1 %T], [value %v], [addr %v]\n", num1, num1, &num1)
 
 	num2 := new(int)
-	fmt.Printf("[num2 %T], [value %v], [addr %v]", num2, *num2, &num2)
+	fmt.Printf("[num2 %T], [value %v], [addr %v]\n", num2, *num2, &num2)
+
+	fmt.Println(utils.ProjectName, utils.DefaultPassword, utils.Version)
 }
 
 func hi(i *int) {

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"amos.wang/awesome/src/main/utils"
 	"fmt"
 	"time"
 )
@@ -22,5 +23,8 @@ func main() {
 
 	fmt.Println(now.Unix())
 	fmt.Println(now.UnixNano())
+
+	fmt.Println(utils.Format(time.Now(), utils.Year2Day))
+	fmt.Println(utils.Format(time.Now(), utils.Year2Second))
 
 }
