@@ -29,6 +29,8 @@ func main() {
 	// 结束时间
 	finish := utils.Format(time.Now().Add(cycle*4*2), utils.Year2Second)
 
+	fmt.Println("开始执行定时提醒任务 :: 一个周期60分钟, 每30分钟提醒一次注意力集中, 每45分钟休息一次, 休息15分钟")
+
 	go func(t *time.Ticker) {
 		defer wg.Done()
 		for {

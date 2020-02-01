@@ -24,11 +24,7 @@ func main() {
 	expression2(&nums2)
 	fmt.Println(nums2)
 
-	nums3 := [...]int{11, 12, 13, 14}
-	// 含头不含尾
-	fmt.Println(nums3[1:2])
-	fmt.Println(len(nums3[1:2]))
-	fmt.Println(cap(nums3[1:2]))
+	fmt.Println("..........................")
 
 }
 
