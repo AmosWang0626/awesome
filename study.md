@@ -2,6 +2,8 @@
 > 该项目目前准备在 go 学习的基础上，结合《为什么精英都是时间控》
 >
 > ### 看看两者能碰撞出什么样的火花
+>
+> [Golang标准库文档](https://studygolang.com/pkgdoc)
 
 ## 基础相关
 1. Hello World!
