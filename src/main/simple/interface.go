@@ -2,6 +2,11 @@ package main
 
 import "fmt"
 
+/*
+1. golang实现接口 不用显示地实现某个接口
+2. 完全实现该接口的方法才算实现了该接口
+*/
+
 type Usb interface {
 	Start()
 	Stop()
@@ -33,9 +38,15 @@ func (d Phone) Start() {
 func (d Phone) Stop() {
 	fmt.Printf("Phone [%v] Stop\n", d.Name)
 }
+func (d Phone) Call() {
+	fmt.Printf("Phone [%v] Call\n", d.Name)
+}
 
 func Working(usb Usb) {
 	usb.Start()
+	if phone, ok := usb.(Phone); ok {
+		phone.Call()
+	}
 	usb.Stop()
 }
 
@@ -47,3 +58,19 @@ func main() {
 	Working(c)
 	Working(p)
 }
+
+// 错误例子
+type i1 interface {
+	test1()
+	test2()
+}
+type i2 interface {
+	test1()
+	test3()
+}
+
+// i3编译错误,应为i1和i2都有test1()
+//type i3 interface {
+//	i1
+//	i2
+//}
