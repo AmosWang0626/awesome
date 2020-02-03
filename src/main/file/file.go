@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"os"
@@ -13,10 +14,56 @@ func main() {
 
 	//readFile1()
 	//readFile2()
-	readAndWriteFile1()
+	//readAndWriteFile1()
+	//copyContent()
+	//pathOrFileExist()
+	copyFile()
 
 	fmt.Println("read file end.")
 
+}
+
+func copyFile() {
+	fileName := "E:\\project\\golang\\awesome\\src\\main\\res\\text.txt"
+	fileName2 := "E:\\project\\golang\\awesome\\src\\main\\res\\text2.txt"
+	file, _ := os.Open(fileName)
+	defer file.Close()
+	reader := bufio.NewReader(file)
+
+	file2, _ := os.OpenFile(fileName2, syscall.O_CREAT|syscall.O_RDWR, 0777)
+	defer file2.Close()
+	writer := bufio.NewWriter(file2)
+
+	_, err := io.Copy(writer, reader)
+	log.Fatalln(err)
+}
+
+func pathOrFileExist() {
+	fileName := "E:\\project\\golang\\awesome\\src\\main\\res1"
+
+	_, err := os.Stat(fileName)
+
+	if err == nil {
+		fmt.Println("[文件或文件夹] 存在")
+		return
+	} else if os.IsNotExist(err) {
+		fmt.Println("[文件或文件夹] 不存在!")
+	} else {
+		fmt.Println("[文件或文件夹] 状态异常!")
+		log.Fatalln(err)
+	}
+
+}
+
+func copyContent() {
+	fileName := "E:\\project\\golang\\awesome\\src\\main\\res\\text.txt"
+	fileName2 := "E:\\project\\golang\\awesome\\src\\main\\res\\text2.txt"
+
+	fileByte, _ := ioutil.ReadFile(fileName)
+
+	fmt.Println(string(fileByte))
+
+	_ = ioutil.WriteFile(fileName2, fileByte, 0666)
 }
 
 func readAndWriteFile1() {
