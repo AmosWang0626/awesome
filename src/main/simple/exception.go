@@ -19,8 +19,7 @@ func main() {
 
 func exception() {
 	defer func() {
-		err := recover()
-		if err != nil {
+		if err := recover(); err != nil {
 			fmt.Println("[ERROR] ::", err)
 		}
 	}()

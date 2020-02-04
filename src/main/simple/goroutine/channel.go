@@ -16,6 +16,14 @@ func main() {
 	//catChannel()
 	interfaceChannel()
 
+	// channel 默认情况下是可写和可读的
+	// 声明只写
+	var c1 = make(chan<- int, 1)
+	c1 <- 11
+	// 声明只读
+	//var c2 = make(<-chan int, 1)
+	//c2 <- 11
+
 }
 
 func interfaceChannel() {
