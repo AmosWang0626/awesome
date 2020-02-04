@@ -12,6 +12,12 @@ func main() {
 
 	num := 100
 
+	// 通过反射修改变量的值
+	fn := reflect.ValueOf(&num)
+	fn.Elem().SetInt(200)
+	fmt.Println(num)
+
+	fmt.Println(".........................................")
 	hello(num)
 	fmt.Println(".........................................")
 	hello(entity.User{Id: int32(111), Name: "AMOS", PhoneNo: "18937128861", Age: 18, Description: "this is description"})
