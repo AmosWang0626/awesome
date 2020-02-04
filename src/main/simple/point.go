@@ -24,6 +24,7 @@ func main() {
 	fmt.Printf("[num2 %T], [value %v], [addr %v]\n", num2, *num2, &num2)
 
 	fmt.Println(utils.ProjectName, utils.DefaultPassword, utils.Version)
+	fmt.Println("ZERO", utils.ZERO, "ONE", utils.ONE, "TWO", utils.TWO, "THREE", utils.THREE, "FOUR", utils.FOUR)
 }
 
 func hi(i *int) {
