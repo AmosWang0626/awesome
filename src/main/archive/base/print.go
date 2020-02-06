@@ -12,6 +12,9 @@ type subject struct {
 }
 
 func main() {
+	ascll := '@'
+	fmt.Println("'@'+1:", string(ascll+1))
+	fmt.Println("'@'+3:", string(ascll+2))
 	var aaa = 10
 	const bbb = 10
 	fmt.Println("Hello, World!", aaa, bbb)
@@ -54,5 +57,6 @@ func main() {
 	fmt.Println(strings.ToLower("Abc"))
 	fmt.Println(strings.ToUpper("Abc"))
 	fmt.Println(strings.Split("Abc,Def,Gfi", ","))
-
+	// hello world
+	fmt.Println(strings.Trim("hello world \r    \n \r \n", " \r\n"))
 }
