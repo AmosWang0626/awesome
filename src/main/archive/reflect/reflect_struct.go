@@ -5,18 +5,13 @@ import (
 	"reflect"
 )
 
-type user struct {
-	Id   int
-	Name string
-}
-
 // 修改结构体字段值
 func main() {
 	var (
-		model *user
+		model *person
 		sv    reflect.Value
 	)
-	model = &user{}
+	model = &person{}
 	sv = reflect.ValueOf(model)
 
 	fmt.Println(sv.Kind().String())

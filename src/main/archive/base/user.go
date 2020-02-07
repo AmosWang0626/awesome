@@ -1,8 +1,17 @@
-package entity
+package main
 
 import (
 	"encoding/json"
+	"fmt"
 )
+
+// 封装
+func main() {
+	user := SimpleUser("amos", "18937128861")
+	fmt.Println(user)
+	// json
+	fmt.Println(&user)
+}
 
 type User struct {
 	Id          int32  `json:"id"`

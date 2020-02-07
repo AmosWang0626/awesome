@@ -1,7 +1,6 @@
 package main
 
 import (
-	"amos.wang/awesome/src/main/application/entity"
 	"fmt"
 	"reflect"
 )
@@ -9,7 +8,7 @@ import (
 // 通过反射获取结构体字段,方法,标签
 func main() {
 
-	user := entity.User{Id: int32(111), Name: "AMOS", PhoneNo: "18937128861", Age: 18, Description: "this is description"}
+	user := user{Id: int32(111), Name: "AMOS", PhoneNo: "18937128861", Age: 18, Description: "this is description"}
 	structReflect(user)
 
 }
