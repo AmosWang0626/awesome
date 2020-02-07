@@ -1,11 +1,10 @@
 # go 学习 2020
-> 该项目目前准备在 go 学习的基础上，结合《为什么精英都是时间控》
->
-> ### 看看两者能碰撞出什么样的火花
->
-> [Golang标准库文档](https://studygolang.com/pkgdoc)
 
-## 基础相关
+## init project
+- go mod init amos.wang/awesome
+- 会生成 `go.mod`
+
+## 一、基础相关
 1. Hello World!
     ```go
     package main
@@ -69,7 +68,7 @@
 11. xxx
 
 
-## GO占位符
+## 二、GO占位符
 1. 普通占位符
 
     | 占位符 | 说明 | 举例 | 输出|
