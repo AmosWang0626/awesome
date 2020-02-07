@@ -1,7 +1,7 @@
 package test
 
 import (
-	"amos.wang/awesome/src/main/utils"
+	"amos.wang/awesome/src/main/utils/date_utils"
 	"fmt"
 	"testing"
 	"time"
@@ -15,7 +15,7 @@ test 文件必须以 _test.go 结尾
 
 // 功能测试函数
 func TestHello(t *testing.T) {
-	str := utils.Format(time.Now(), utils.Year2Second)
+	str := date_utils.Format(time.Now(), date_utils.Year2Second)
 	t.Log("t.Log()", str)
 
 	t.Error(str)
@@ -28,5 +28,5 @@ func TestHello(t *testing.T) {
 
 // 基准（性能）测试函数
 func BenchmarkHello(b *testing.B) {
-	utils.Format(time.Now(), utils.Year2Second)
+	date_utils.Format(time.Now(), date_utils.Year2Second)
 }

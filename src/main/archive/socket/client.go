@@ -2,7 +2,7 @@ package main
 
 import (
 	"amos.wang/awesome/src/main/archive/socket/pact"
-	"amos.wang/awesome/src/main/utils"
+	"amos.wang/awesome/src/main/utils/date_utils"
 	"bufio"
 	"fmt"
 	"log"
@@ -60,7 +60,7 @@ func sendMessage(conn net.Conn, username string) (request string) {
 		// {"to_user":"A","from_user":"amos","message":"hello world","send_time":"2020-02-06 16:56:14"}
 		infoArr := strings.Split(input, "|")
 		chatMsg := pact.ChatMsg{FromUser: username, ToUser: strings.Trim(infoArr[0], " "),
-			Message: strings.Trim(infoArr[1], " "), SendTime: utils.NowStr()}
+			Message: strings.Trim(infoArr[1], " "), SendTime: date_utils.NowStr()}
 		request = string(pact.Encode(&chatMsg))
 	}
 

@@ -1,4 +1,6 @@
-package utils
+package main
+
+import "fmt"
 
 /*
 1.常量定义时必须初始化
@@ -17,3 +19,8 @@ const (
 	THREE
 	FOUR
 )
+
+func main() {
+	fmt.Println(ProjectName, DefaultPassword, Version)
+	fmt.Println("ZERO", ZERO, "ONE", ONE, "TWO", TWO, "THREE", THREE, "FOUR", FOUR)
+}

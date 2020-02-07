@@ -1,7 +1,8 @@
 package main
 
 import (
-	"amos.wang/awesome/src/main/utils"
+	"amos.wang/awesome/src/main/utils/date_utils"
+	"amos.wang/awesome/src/main/utils/push_utils"
 	"fmt"
 	"sync"
 	"time"
@@ -27,7 +28,7 @@ func main() {
 	ticker := time.NewTicker(cycle)
 
 	// 结束时间
-	finish := utils.Format(time.Now().Add(cycle*4*2), utils.Year2Second)
+	finish := date_utils.Format(time.Now().Add(cycle*4*2), date_utils.Year2Second)
 
 	fmt.Println("开始执行定时提醒任务 :: 一个周期60分钟, 每30分钟提醒一次注意力集中, 每45分钟休息一次, 休息15分钟")
 
@@ -36,7 +37,7 @@ func main() {
 		for {
 			current := <-t.C
 			keep += 15
-			temp := utils.Format(current, utils.Year2Second)
+			temp := date_utils.Format(current, date_utils.Year2Second)
 
 			fmt.Println(temp, "来了,老弟", keep)
 			if temp == finish {
@@ -46,16 +47,16 @@ func main() {
 			// 45分钟 休息15分钟
 			message := ""
 			if keep%60 == 45 {
-				message = fmt.Sprintf("该休息一下啦, 休息时间: %d, 截止时间: %v", 15, utils.Format(current.Add(15*time.Minute), utils.Hour2Second))
+				message = fmt.Sprintf("该休息一下啦, 休息时间: %d, 截止时间: %v", 15, date_utils.Format(current.Add(15*time.Minute), date_utils.Hour2Second))
 				fmt.Println(message)
-				utils.SimpleNotice(message)
+				push_utils.SimpleNotice(message)
 			} else if keep%60 == 30 {
 				message = fmt.Sprintf("清醒一下哦, 还有15分钟就可以休息啦")
-				utils.SimpleNotice(message)
+				push_utils.SimpleNotice(message)
 				fmt.Println(message)
 			} else if keep%60 == 0 {
 				message = fmt.Sprintf("休息结束, 开始工作吧")
-				utils.SimpleNotice(message)
+				push_utils.SimpleNotice(message)
 				fmt.Println(message)
 			}
 		}

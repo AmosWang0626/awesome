@@ -1,6 +1,8 @@
-package utils
+package push_utils
 
 import (
+	"amos.wang/awesome/src/main/utils/date_utils"
+	"amos.wang/awesome/src/main/utils/trans_utils"
 	"gopkg.in/toast.v1"
 	"log"
 	"time"
@@ -19,9 +21,9 @@ func Notice(title, message string) {
 
 // https://gopkg.in/toast.v1
 func baseNotice(title, message string) {
-	notice := Utf8ToGbk(title)
-	message = Utf8ToGbk(message)
-	log.SetPrefix(Format(time.Now(), Year2Second))
+	notice := trans_utils.Utf8ToGbk(title)
+	message = trans_utils.Utf8ToGbk(message)
+	log.SetPrefix(date_utils.Format(time.Now(), date_utils.Year2Second))
 
 	notification := toast.Notification{
 		// AppID 必填, 可随便拿一个现有程序的 AppID
