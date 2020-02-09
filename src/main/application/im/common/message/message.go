@@ -30,9 +30,8 @@ type LoginRequest struct {
 }
 
 func (m LoginRequest) Decode(buf []byte) LoginRequest {
-	var msg LoginRequest
-	_ = json.Unmarshal(buf, &msg)
-	return msg
+	_ = json.Unmarshal(buf, &m)
+	return m
 }
 
 func (m LoginRequest) Encode() []byte {
@@ -41,6 +40,16 @@ func (m LoginRequest) Encode() []byte {
 }
 
 type LoginResponse struct {
-	Code  int    // 状态码 500 未注册 200 登录成功
+	Code  int    // 状态码
 	Error string // 错误信息
+}
+
+func (m LoginResponse) Decode(buf []byte) LoginResponse {
+	_ = json.Unmarshal(buf, &m)
+	return m
+}
+
+func (m LoginResponse) Encode() []byte {
+	buf, _ := json.Marshal(m)
+	return buf
 }

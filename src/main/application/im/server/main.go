@@ -1,18 +1,18 @@
 package main
 
 import (
+	"amos.wang/awesome/src/main/application/im/common/imconstant"
 	"amos.wang/awesome/src/main/application/im/common/message"
+	"amos.wang/awesome/src/main/application/im/common/read_write"
 	"amos.wang/awesome/src/main/utils/log_utils"
-	"encoding/binary"
 	"fmt"
 	"io"
 	"net"
 )
 
 func main() {
-	port := 8889
-	fmt.Println("服务器开始监听, 监听端口:", port)
-	listen, err := net.Listen("tcp", "0.0.0.0:8889")
+	fmt.Println("服务器开始监听, 监听端口:", imconstant.Address)
+	listen, err := net.Listen(imconstant.Network, imconstant.Address)
 	defer listen.Close()
 	if err != nil {
 		log_utils.Error.Println("net.Listen", err)
@@ -36,35 +36,44 @@ func process(conn net.Conn) {
 	log_utils.Debug.Println("协程开始处理~~", conn.RemoteAddr())
 
 	for {
-		msg, err := readMessage(conn)
+		msg, err := read_write.Read(conn)
 		if err != nil {
-			log_utils.Error.Println("readMessage(conn)", err)
 			if err == io.EOF {
-				log_utils.Info.Println("客户端关闭,协程正常退出")
+				log_utils.Debug.Println("客户端关闭,协程正常退出")
 				return
 			}
 		}
-		fmt.Println(msg)
+		err = processMsg(conn, &msg)
+		if err != nil {
+			fmt.Println("处理客户端消息异常", err)
+			return
+		}
 	}
 
 }
 
-func readMessage(conn net.Conn) (msg message.Message, err error) {
-	buf := make([]byte, 4096)
-	_, err = conn.Read(buf[:4])
-	if err != nil {
-		log_utils.Error.Println("len conn.Read", err)
-		return
+func processMsg(conn net.Conn, msg *message.Message) (err error) {
+	switch msg.Type {
+
+	case message.LoginRequestType:
+		log_utils.Debug.Println("login request", msg.Data)
+		return processLogin(conn, msg)
+
+	default:
+		log_utils.Warning.Println("message.Type undefined", msg)
+		return nil
 	}
+}
 
-	bufLen := binary.BigEndian.Uint32(buf[:4])
-	n, err := conn.Read(buf[:bufLen])
-	if uint32(n) != bufLen || err != nil {
-		log_utils.Error.Println("msg conn.Read", err)
-		return
+func processLogin(conn net.Conn, msg *message.Message) (err error) {
+	var loginRequest message.LoginRequest
+	loginRequest = loginRequest.Decode([]byte(msg.Data))
+
+	loginResp := message.LoginResponse{Code: imconstant.Success, Error: imconstant.SuccessMsg}
+	if loginRequest.UserPwd != imconstant.DefaultPassword {
+		loginResp.Code = imconstant.Forbidden
+		loginResp.Error = imconstant.UnauthorizedMsg
 	}
-
-	msg = msg.Decode(buf[:bufLen])
-
-	return
+	loginRespMsg := message.Message{Type: message.LoginResponseType, Data: string(loginResp.Encode())}
+	return read_write.Write(&loginRespMsg, conn)
 }

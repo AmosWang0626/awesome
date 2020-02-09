@@ -57,7 +57,7 @@ func login() {
 	err := business.Login(userId, userPwd)
 	if err != nil {
 		fmt.Println("登录失败", err)
-		return
+	} else {
+		fmt.Println("登录成功")
 	}
-	fmt.Println(userId, "登录成功")
 }
