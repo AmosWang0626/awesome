@@ -1,9 +1,9 @@
-package business
+package process
 
 import (
 	"amos.wang/awesome/src/main/application/im/common/imconstant"
 	"amos.wang/awesome/src/main/application/im/common/message"
-	"amos.wang/awesome/src/main/application/im/common/read_write"
+	"amos.wang/awesome/src/main/application/im/common/utils"
 	"amos.wang/awesome/src/main/utils/log_utils"
 	"errors"
 	"net"
@@ -23,13 +23,18 @@ func Login(userId int, userPwd string) (err error) {
 	}
 	defer conn.Close()
 
-	loginRequest := message.LoginRequest{UserId: userId, UserPwd: userPwd, Username: ""}
-	msg := message.Message{Type: message.LoginRequestType, Data: string(loginRequest.Encode())}
-	err = read_write.Write(&msg, conn)
+	loginReq := message.LoginRequest{UserId: userId, UserPwd: userPwd, Username: ""}
+	msg := message.Message{Type: message.LoginRequestType, Data: string(loginReq.Encode())}
+
+	// 请求服务器
+	tf := utils.Transfer{Conn: conn}
+	err = tf.Write(msg.Encode())
 	if err != nil {
 		return
 	}
-	loginRespMsg, err := read_write.Read(conn)
+
+	// 处理服务器返回结果
+	loginRespMsg, err := tf.Read()
 	if err != nil {
 		return
 	}
@@ -41,10 +46,10 @@ func processMsg(msg *message.Message) (err error) {
 	switch msg.Type {
 
 	case message.LoginResponseType:
-		var loginResponse message.LoginResponse
-		loginResponse = loginResponse.Decode([]byte(msg.Data))
-		if loginResponse.Code != 200 {
-			return errors.New(loginResponse.Error)
+		var loginResp message.LoginResponse
+		loginResp = loginResp.Decode([]byte(msg.Data))
+		if loginResp.Code != 200 {
+			return errors.New(loginResp.Error)
 		}
 
 		return nil

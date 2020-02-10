@@ -1,7 +1,7 @@
 package main
 
 import (
-	"amos.wang/awesome/src/main/application/im/client/business"
+	"amos.wang/awesome/src/main/application/im/client/process"
 	"fmt"
 )
 
@@ -54,7 +54,7 @@ func login() {
 	fmt.Print("请输入用户密码：")
 	_, _ = fmt.Scanln(&userPwd)
 
-	err := business.Login(userId, userPwd)
+	err := process.Login(userId, userPwd)
 	if err != nil {
 		fmt.Println("登录失败", err)
 	} else {
