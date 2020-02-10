@@ -1,4 +1,4 @@
-package process
+package cprocess
 
 import (
 	"amos.wang/awesome/src/main/application/im/common/imconstant"
@@ -9,7 +9,10 @@ import (
 	"net"
 )
 
-func Login(userId int, userPwd string) (err error) {
+type UserProcess struct {
+}
+
+func (current *UserProcess) Login(userId int, userPwd string) (err error) {
 	if userId == 0 || userPwd == "" {
 		log_utils.Error.Println("用户ID、密码不能为空", userId, userPwd)
 		return errors.New("用户ID、密码不能为空")
