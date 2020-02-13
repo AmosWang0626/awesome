@@ -2,13 +2,16 @@ package main
 
 import (
 	"amos.wang/awesome/src/main/application/im/client/cprocess"
+	"amos.wang/awesome/src/main/utils/input_utils"
 	"fmt"
 	"os"
+	"strconv"
 )
 
 var (
-	userId  int
-	userPwd string
+	account  uint64
+	userPwd  string
+	username string
 )
 
 func main() {
@@ -33,24 +36,31 @@ func main() {
 
 		switch key {
 		case 1:
-			fmt.Print("请输入用户ID(纯数字)：")
-			_, _ = fmt.Scanf("%d\n", &userId)
-			fmt.Print("请输入用户密码：")
-			_, _ = fmt.Scanln(&userPwd)
+			fmt.Println("登录聊天室")
+			inputAccountAndPwd()
 
 			up := cprocess.UserProcess{}
-			err := up.Login(userId, userPwd)
+			err := up.Login(account, userPwd)
 			if err != nil {
 				fmt.Println("登录失败", err)
 			} else {
 				fmt.Println("登录成功")
-				for {
-					// 展示服务菜单
-					cprocess.ShowMenu(fmt.Sprint(userId))
-				}
+				showLoginSuccessMenu()
 			}
 		case 2:
 			fmt.Println("注册用户")
+			inputAccountAndPwd()
+			fmt.Print("请输入用户名：")
+			_, _ = fmt.Scanf("%s\n", &username)
+
+			up := cprocess.UserProcess{}
+			err := up.Register(account, userPwd, username)
+			if err != nil {
+				fmt.Println("注册失败", err)
+			} else {
+				fmt.Println("注册成功")
+				showLoginSuccessMenu()
+			}
 		case 3:
 			fmt.Println("退出系统")
 			os.Exit(0)
@@ -59,4 +69,38 @@ func main() {
 		}
 	}
 
+}
+
+/*
+展示登录成功/注册成功服务菜单
+*/
+func showLoginSuccessMenu() {
+	for {
+		// 展示服务菜单
+		if username == "" {
+			username = fmt.Sprint(account)
+		}
+		cprocess.ShowMenu(username)
+	}
+}
+
+/*
+输入账号密码共用方法
+*/
+func inputAccountAndPwd() {
+	loop := true
+	for loop {
+		fmt.Print("请输入用户账号(纯数字)：")
+		var accountStr string
+		_, _ = fmt.Scanf("%s\n", &accountStr)
+		isNum := input_utils.IsNum(accountStr)
+		if !isNum {
+			fmt.Println("用户账号只能是数字")
+		} else {
+			loop = false
+			account, _ = strconv.ParseUint(accountStr, 10, 64)
+		}
+	}
+	fmt.Print("请输入用户密码：")
+	_, _ = fmt.Scanln(&userPwd)
 }

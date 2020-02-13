@@ -12,7 +12,7 @@ type UserProcess struct {
 }
 
 func (current *UserProcess) processLogin(msg *message.Message) (err error) {
-	var loginReq message.LoginRequest
+	loginReq := &message.LoginRequest{}
 	loginReq = loginReq.Decode([]byte(msg.Data))
 
 	// 登录相关业务逻辑
@@ -20,6 +20,8 @@ func (current *UserProcess) processLogin(msg *message.Message) (err error) {
 	if loginReq.UserPwd != imconstant.DefaultPassword {
 		loginResp.Code = imconstant.Unauthorized
 		loginResp.Error = imconstant.UnauthorizedMsg
+	} else {
+
 	}
 
 	// 返回登录结果

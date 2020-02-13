@@ -21,7 +21,7 @@ func (current *Processor) Process() error {
 		}
 
 		// 处理客户端消息
-		err = current.processMsg(&msg)
+		err = current.processMsg(msg)
 		if err != nil {
 			return err
 		}

@@ -36,7 +36,7 @@ func (current *Transfer) Write(buf []byte) (err error) {
 /*
 conn read len and buffer, decode to message
 */
-func (current *Transfer) Read() (msg message.Message, err error) {
+func (current *Transfer) Read() (msg *message.Message, err error) {
 	_, err = current.Conn.Read(current.Buf[:4])
 	if err != nil {
 		log_utils.Error.Println("len conn.Read", err)
@@ -49,7 +49,7 @@ func (current *Transfer) Read() (msg message.Message, err error) {
 		log_utils.Error.Println("msg conn.Read", err)
 		return
 	}
-
+	msg = &message.Message{}
 	msg = msg.Decode(current.Buf[:bufLen])
 
 	return
