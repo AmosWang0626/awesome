@@ -32,9 +32,19 @@ func (current *Processor) processMsg(msg *message.Message) (err error) {
 	switch msg.Type {
 
 	case message.LoginRequestType:
-		log_utils.Debug.Println("login request", msg.Data)
+		//log_utils.Debug.Println("login request", msg.Data)
 		up := UserProcess{Conn: current.Conn}
 		return up.processLogin(msg)
+
+	case message.RegisterRequestType:
+		//log_utils.Debug.Println("register request", msg.Data)
+		up := UserProcess{Conn: current.Conn}
+		return up.processRegister(msg)
+
+	case message.UserAllRequestType:
+		// log_utils.Debug.Println("user all request", msg.Data)
+		up := UserProcess{Conn: current.Conn}
+		return up.userAll()
 
 	default:
 		log_utils.Warning.Println("message.Type undefined", msg)

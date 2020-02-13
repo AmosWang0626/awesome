@@ -3,8 +3,12 @@ package message
 import "encoding/json"
 
 const (
-	LoginRequestType  = "LoginRequest"
-	LoginResponseType = "LoginResponse"
+	LoginRequestType     = "LoginRequest"
+	LoginResponseType    = "LoginResponse"
+	RegisterRequestType  = "RegisterRequest"
+	RegisterResponseType = "RegisterResponse"
+	UserAllRequestType   = "UserAllRequest"
+	UserAllResponseType  = "UserAllResponse"
 )
 
 type Message struct {
@@ -41,6 +45,7 @@ func (m *LoginRequest) Encode() []byte {
 type LoginResponse struct {
 	Code  int    // 状态码
 	Error string // 错误信息
+	Body  string // response body
 }
 
 func (m *LoginResponse) Decode(buf []byte) *LoginResponse {
@@ -73,6 +78,7 @@ func (m *RegisterRequest) Encode() []byte {
 type RegisterResponse struct {
 	Code  int    // 状态码
 	Error string // 错误信息
+	Body  string // response body
 }
 
 func (m *RegisterResponse) Decode(buf []byte) *RegisterResponse {

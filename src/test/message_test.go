@@ -14,7 +14,7 @@ func TestMessage(t *testing.T) {
 
 	fmt.Println(string(loginRespMsg.Encode()))
 
-	var parseLoginRespMsg message.Message
+	parseLoginRespMsg := &message.Message{}
 	// !!!!!!!!!!!!!!!! must receive Decode response
 	parseLoginRespMsg = parseLoginRespMsg.Decode(loginRespMsg.Encode())
 

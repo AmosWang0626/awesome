@@ -60,6 +60,9 @@ func main() {
 
 	replay, _ = redis.Strings(conn.Do("hmget", "user1", "name", "age", "email"))
 	fmt.Println("hash hmget user1 name age email", replay)
+
+	replay, _ = redis.StringMap(conn.Do("hgetall", "users"))
+	fmt.Println("hash hgetall users", replay)
 	fmt.Println()
 
 	// list >>>>>>>>>>>> lpush rpush lrange lpop rpop

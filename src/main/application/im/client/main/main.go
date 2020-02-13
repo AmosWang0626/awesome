@@ -42,10 +42,9 @@ func main() {
 			up := cprocess.UserProcess{}
 			err := up.Login(account, userPwd)
 			if err != nil {
-				fmt.Println("登录失败", err)
+				fmt.Println("登录失败 >>>", err)
 			} else {
 				fmt.Println("登录成功")
-				showLoginSuccessMenu()
 			}
 		case 2:
 			fmt.Println("注册用户")
@@ -59,7 +58,6 @@ func main() {
 				fmt.Println("注册失败", err)
 			} else {
 				fmt.Println("注册成功")
-				showLoginSuccessMenu()
 			}
 		case 3:
 			fmt.Println("退出系统")
@@ -69,19 +67,6 @@ func main() {
 		}
 	}
 
-}
-
-/*
-展示登录成功/注册成功服务菜单
-*/
-func showLoginSuccessMenu() {
-	for {
-		// 展示服务菜单
-		if username == "" {
-			username = fmt.Sprint(account)
-		}
-		cprocess.ShowMenu(username)
-	}
 }
 
 /*

@@ -2,6 +2,7 @@ package main
 
 import (
 	"amos.wang/awesome/src/main/application/im/common/imconstant"
+	"amos.wang/awesome/src/main/application/im/server/dao"
 	"amos.wang/awesome/src/main/application/im/server/process"
 	"amos.wang/awesome/src/main/utils/log_utils"
 	"fmt"
@@ -17,6 +18,9 @@ func main() {
 		log_utils.Error.Println("net.Listen", err)
 		return
 	}
+
+	// 初始化 Dao
+	initDao()
 
 	for {
 		conn, err := listen.Accept()
@@ -45,4 +49,8 @@ func mainProcess(conn net.Conn) {
 		fmt.Println("处理客户端消息异常", err)
 		return
 	}
+}
+
+func initDao() {
+	dao.InitUserDao()
 }

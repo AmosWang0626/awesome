@@ -1,4 +1,4 @@
-package dao
+package utils
 
 import "github.com/garyburd/redigo/redis"
 

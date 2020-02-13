@@ -39,7 +39,7 @@ conn read len and buffer, decode to message
 func (current *Transfer) Read() (msg *message.Message, err error) {
 	_, err = current.Conn.Read(current.Buf[:4])
 	if err != nil {
-		log_utils.Error.Println("len conn.Read", err)
+		log_utils.Error.Println(err)
 		return
 	}
 
