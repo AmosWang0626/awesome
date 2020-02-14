@@ -3,12 +3,14 @@ package message
 import "encoding/json"
 
 const (
-	LoginRequestType     = "LoginRequest"
-	LoginResponseType    = "LoginResponse"
-	RegisterRequestType  = "RegisterRequest"
-	RegisterResponseType = "RegisterResponse"
-	UserAllRequestType   = "UserAllRequest"
-	UserAllResponseType  = "UserAllResponse"
+	LoginRequestType       = "LoginRequest"
+	LoginResponseType      = "LoginResponse"
+	RegisterRequestType    = "RegisterRequest"
+	RegisterResponseType   = "RegisterResponse"
+	UserAllRequestType     = "UserAllRequest"
+	UserAllResponseType    = "UserAllResponse"
+	UserOnlineRequestType  = "UserOnlineRequest"
+	UserOnlineResponseType = "UserOnlineResponse"
 )
 
 type Message struct {

@@ -37,6 +37,7 @@ func main() {
 
 func mainProcess(conn net.Conn) {
 	defer conn.Close()
+	defer logout(conn)
 
 	ps := process.Processor{Conn: conn}
 	err := ps.Process()
@@ -53,4 +54,11 @@ func mainProcess(conn net.Conn) {
 
 func initDao() {
 	dao.InitUserDao()
+}
+
+/*
+客户端退出,删除对应在线列表中的人
+*/
+func logout(conn net.Conn) {
+	process.MyUserMgr.DeleteByConn(conn)
 }

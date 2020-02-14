@@ -115,8 +115,7 @@ func processMsg(msg *message.Message, conn net.Conn) (err error) {
 2. 展示登录成功后的菜单
 */
 func loginSuccess(conn net.Conn, userInfo string) {
-	log_utils.Debug.Println("UserInfo", userInfo)
-
+	//log_utils.Debug.Println("UserInfo", userInfo)
 	user := &module.User{}
 	user = user.Decode([]byte(userInfo))
 

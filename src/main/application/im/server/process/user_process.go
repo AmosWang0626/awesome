@@ -11,7 +11,9 @@ import (
 )
 
 type UserProcess struct {
-	Conn net.Conn
+	Conn    net.Conn
+	Account uint64
+	User    *module.User
 }
 
 func (current *UserProcess) processRegister(msg *message.Message) (err error) {
@@ -28,6 +30,9 @@ func (current *UserProcess) processRegister(msg *message.Message) (err error) {
 		registerResp.Error = err.Error()
 	} else {
 		registerResp.Body = string(user.Encode())
+		current.User = user
+		current.Account = user.Account
+		MyUserMgr.Save(current)
 	}
 
 	// 返回登录结果
@@ -50,6 +55,9 @@ func (current *UserProcess) processLogin(msg *message.Message) (err error) {
 		loginResp.Error = err.Error()
 	} else {
 		loginResp.Body = string(user.Encode())
+		current.User = user
+		current.Account = user.Account
+		MyUserMgr.Save(current)
 	}
 
 	// 返回登录结果
@@ -65,6 +73,22 @@ func (current *UserProcess) userAll() (err error) {
 
 	// 返回登录结果
 	userMapMsg := message.Message{Type: message.UserAllResponseType, Data: string(bytes)}
+
+	tf := &utils.Transfer{Conn: current.Conn}
+	return tf.Write(userMapMsg.Encode())
+}
+
+func (current *UserProcess) userOnline() (err error) {
+	userPressMap := MyUserMgr.Select()
+	var userMap map[uint64]*module.User
+	userMap = make(map[uint64]*module.User, len(userPressMap))
+	for key, process := range userPressMap {
+		userMap[key] = process.User
+	}
+	bytes, _ := json.Marshal(userMap)
+
+	// 返回登录结果
+	userMapMsg := message.Message{Type: message.UserOnlineResponseType, Data: string(bytes)}
 
 	tf := &utils.Transfer{Conn: current.Conn}
 	return tf.Write(userMapMsg.Encode())

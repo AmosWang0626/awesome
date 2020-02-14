@@ -42,9 +42,14 @@ func (current *Processor) processMsg(msg *message.Message) (err error) {
 		return up.processRegister(msg)
 
 	case message.UserAllRequestType:
-		// log_utils.Debug.Println("user all request", msg.Data)
+		// log_utils.Debug.Println("user all request")
 		up := UserProcess{Conn: current.Conn}
 		return up.userAll()
+
+	case message.UserOnlineRequestType:
+		//log_utils.Debug.Println("user online request")
+		up := UserProcess{Conn: current.Conn}
+		return up.userOnline()
 
 	default:
 		log_utils.Warning.Println("message.Type undefined", msg)
