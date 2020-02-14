@@ -15,6 +15,7 @@ const (
 	UserOnlineRequestType  = "UserOnlineRequest"
 	UserOnlineResponseType = "UserOnlineResponse"
 	OnlineNoticeType       = "OnlineNotice"
+	LogoutNoticeType       = "LogoutNotice"
 )
 
 type Message struct {

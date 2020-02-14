@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net"
+	"strconv"
 )
 
 /*
@@ -62,12 +63,24 @@ func pushProcessMsg(msg *message.Message) (err error) {
 		}
 		MyClientUserInfoMgr.Save(userInfo)
 		// 用户登录成功
+		fmt.Println()
 		if userInfo.Status == module.NEW {
 			log_utils.Info.Println("新用户登录啦", string(userInfo.Encode()))
 		} else if userInfo.Status == module.ONLINE {
 			log_utils.Info.Println("用户登录啦", string(userInfo.Encode()))
 		} else {
 			log_utils.Info.Println("用户登录啦", string(userInfo.Encode()))
+		}
+
+	case message.LogoutNoticeType:
+		// 用户退出成功
+		fmt.Println()
+		account, err := strconv.ParseUint(msg.Data, 10, 64)
+		log_utils.Info.Println("用户退出啦", account)
+		if err != nil {
+			log_utils.Error.Println("删除本地在线用户失败")
+		} else {
+			MyClientUserInfoMgr.Delete(account)
 		}
 
 	default:

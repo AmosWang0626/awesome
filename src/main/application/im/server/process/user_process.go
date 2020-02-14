@@ -9,6 +9,7 @@ import (
 	"amos.wang/awesome/src/main/utils/log_utils"
 	"encoding/json"
 	"net"
+	"strconv"
 )
 
 type UserProcess struct {
@@ -82,6 +83,25 @@ func (current *UserProcess) processLogin(msg *message.Message) (err error) {
 	return tf.Write(loginRespMsg.Encode())
 }
 
+/*
+用户退出通知
+*/
+func LogoutNotice(account uint64) {
+	accountMsg := message.Message{Type: message.LogoutNoticeType, Data: strconv.FormatUint(account, 10)}
+	userProcessMap := MyUserMgr.Select()
+	for _, process := range userProcessMap {
+		tf := &utils.Transfer{Conn: process.Conn}
+		err := tf.Write(accountMsg.Encode())
+		if err != nil {
+			log_utils.Error.Println("OnlineNotice", err)
+			continue
+		}
+	}
+}
+
+/*
+用户上线通知
+*/
 func onlineNotice(userInfo *module.UserInfo) {
 	userInfoMsg := message.Message{Type: message.OnlineNoticeType, Data: string(userInfo.Encode())}
 	userProcessMap := MyUserMgr.Select()

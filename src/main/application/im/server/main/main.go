@@ -60,5 +60,10 @@ func initDao() {
 客户端退出,删除对应在线列表中的人
 */
 func logout(conn net.Conn) {
-	process.MyUserMgr.DeleteByConn(conn)
+	account, err := process.MyUserMgr.DeleteByConn(conn)
+	if err != nil {
+		log_utils.Error.Println(err)
+		return
+	}
+	process.LogoutNotice(account)
 }
