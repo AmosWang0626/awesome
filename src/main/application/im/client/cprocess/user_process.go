@@ -89,6 +89,7 @@ func processMsg(msg *message.Message, conn net.Conn) (err error) {
 		if loginResp.Code != 200 {
 			return errors.New(loginResp.Error)
 		}
+		MyClientUserInfoMgr.SaveAll(loginResp.OnlineUser)
 		loginSuccess(conn, loginResp.Body)
 
 		return nil
@@ -99,6 +100,7 @@ func processMsg(msg *message.Message, conn net.Conn) (err error) {
 		if registerResp.Code != 200 {
 			return errors.New(registerResp.Error)
 		}
+		MyClientUserInfoMgr.SaveAll(registerResp.OnlineUser)
 		loginSuccess(conn, registerResp.Body)
 
 		return nil
@@ -114,16 +116,16 @@ func processMsg(msg *message.Message, conn net.Conn) (err error) {
 1. 开启协程,处理服务器推送
 2. 展示登录成功后的菜单
 */
-func loginSuccess(conn net.Conn, userInfo string) {
-	//log_utils.Debug.Println("UserInfo", userInfo)
-	user := &module.User{}
-	user = user.Decode([]byte(userInfo))
+func loginSuccess(conn net.Conn, userInfoStr string) {
+	//log_utils.Debug.Println("UserInfoStr", userInfoStr)
+	userInfo := &module.UserInfo{}
+	userInfo = userInfo.Decode([]byte(userInfoStr))
 
 	// 注册成功, 开启一个协程, 读取服务器推送信息
-	//go pushProcess(conn)
+	go pushProcess(conn)
 
 	// 展示登录成功后的菜单
 	for {
-		ShowMenu(conn, user.Username)
+		ShowMenu(conn, userInfo.Username)
 	}
 }

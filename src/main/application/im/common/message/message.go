@@ -1,6 +1,9 @@
 package message
 
-import "encoding/json"
+import (
+	"amos.wang/awesome/src/main/application/im/common/module"
+	"encoding/json"
+)
 
 const (
 	LoginRequestType       = "LoginRequest"
@@ -11,6 +14,7 @@ const (
 	UserAllResponseType    = "UserAllResponse"
 	UserOnlineRequestType  = "UserOnlineRequest"
 	UserOnlineResponseType = "UserOnlineResponse"
+	OnlineNoticeType       = "OnlineNotice"
 )
 
 type Message struct {
@@ -45,9 +49,10 @@ func (m *LoginRequest) Encode() []byte {
 }
 
 type LoginResponse struct {
-	Code  int    // 状态码
-	Error string // 错误信息
-	Body  string // response body
+	Code       int                         // 状态码
+	Error      string                      // 错误信息
+	Body       string                      // 当前用户信息
+	OnlineUser map[uint64]*module.UserInfo // 在线用户
 }
 
 func (m *LoginResponse) Decode(buf []byte) *LoginResponse {
@@ -78,9 +83,10 @@ func (m *RegisterRequest) Encode() []byte {
 }
 
 type RegisterResponse struct {
-	Code  int    // 状态码
-	Error string // 错误信息
-	Body  string // response body
+	Code       int                         // 状态码
+	Error      string                      // 错误信息
+	Body       string                      // 当前用户信息
+	OnlineUser map[uint64]*module.UserInfo // 在线用户
 }
 
 func (m *RegisterResponse) Decode(buf []byte) *RegisterResponse {

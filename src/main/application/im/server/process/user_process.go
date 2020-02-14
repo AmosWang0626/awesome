@@ -6,14 +6,15 @@ import (
 	"amos.wang/awesome/src/main/application/im/common/module"
 	"amos.wang/awesome/src/main/application/im/common/utils"
 	"amos.wang/awesome/src/main/application/im/server/dao"
+	"amos.wang/awesome/src/main/utils/log_utils"
 	"encoding/json"
 	"net"
 )
 
 type UserProcess struct {
-	Conn    net.Conn
-	Account uint64
-	User    *module.User
+	Conn     net.Conn
+	Account  uint64
+	UserInfo *module.UserInfo
 }
 
 func (current *UserProcess) processRegister(msg *message.Message) (err error) {
@@ -29,8 +30,15 @@ func (current *UserProcess) processRegister(msg *message.Message) (err error) {
 		registerResp.Code = imconstant.PreconditionFailed
 		registerResp.Error = err.Error()
 	} else {
-		registerResp.Body = string(user.Encode())
-		current.User = user
+		// 注册成功
+		userInfo := &module.UserInfo{Account: user.Account, Username: user.Username, Status: module.NEW}
+		// 返回用户信息给客户端
+		registerResp.Body = string(userInfo.Encode())
+		registerResp.OnlineUser = onlineUserInfoMap()
+		// 用户上线通知
+		onlineNotice(userInfo)
+		// 保存用户在线状态
+		current.UserInfo = userInfo
 		current.Account = user.Account
 		MyUserMgr.Save(current)
 	}
@@ -54,8 +62,15 @@ func (current *UserProcess) processLogin(msg *message.Message) (err error) {
 		loginResp.Code = imconstant.PreconditionFailed
 		loginResp.Error = err.Error()
 	} else {
-		loginResp.Body = string(user.Encode())
-		current.User = user
+		// 登录成功
+		userInfo := &module.UserInfo{Account: user.Account, Username: user.Username, Status: module.ONLINE}
+		// 返回用户信息给客户端
+		loginResp.Body = string(userInfo.Encode())
+		loginResp.OnlineUser = onlineUserInfoMap()
+		// 用户上线通知
+		onlineNotice(userInfo)
+		// 保存用户在线状态
+		current.UserInfo = userInfo
 		current.Account = user.Account
 		MyUserMgr.Save(current)
 	}
@@ -65,6 +80,19 @@ func (current *UserProcess) processLogin(msg *message.Message) (err error) {
 
 	tf := &utils.Transfer{Conn: current.Conn}
 	return tf.Write(loginRespMsg.Encode())
+}
+
+func onlineNotice(userInfo *module.UserInfo) {
+	userInfoMsg := message.Message{Type: message.OnlineNoticeType, Data: string(userInfo.Encode())}
+	userProcessMap := MyUserMgr.Select()
+	for _, process := range userProcessMap {
+		tf := &utils.Transfer{Conn: process.Conn}
+		err := tf.Write(userInfoMsg.Encode())
+		if err != nil {
+			log_utils.Error.Println("OnlineNotice", err)
+			continue
+		}
+	}
 }
 
 func (current *UserProcess) userAll() (err error) {
@@ -79,17 +107,27 @@ func (current *UserProcess) userAll() (err error) {
 }
 
 func (current *UserProcess) userOnline() (err error) {
-	userPressMap := MyUserMgr.Select()
-	var userMap map[uint64]*module.User
-	userMap = make(map[uint64]*module.User, len(userPressMap))
-	for key, process := range userPressMap {
-		userMap[key] = process.User
-	}
-	bytes, _ := json.Marshal(userMap)
+	bytes, _ := json.Marshal(onlineUserInfoMap())
 
 	// 返回登录结果
 	userMapMsg := message.Message{Type: message.UserOnlineResponseType, Data: string(bytes)}
 
 	tf := &utils.Transfer{Conn: current.Conn}
 	return tf.Write(userMapMsg.Encode())
+}
+
+/*
+Online Users UserInfo Map
+*/
+func onlineUserInfoMap() map[uint64]*module.UserInfo {
+	userProcessMap := MyUserMgr.Select()
+
+	var userInfoMap map[uint64]*module.UserInfo
+	userInfoMap = make(map[uint64]*module.UserInfo, len(userProcessMap))
+
+	for key, process := range userProcessMap {
+		userInfoMap[key] = process.UserInfo
+	}
+
+	return userInfoMap
 }
