@@ -6,6 +6,7 @@ import (
 
 var (
 	MyClientUserInfoMgr *ClientUserInfoMgr
+	MyCurrentUser       *module.CurrentUser // 登录成功后初始化
 )
 
 type ClientUserInfoMgr struct {

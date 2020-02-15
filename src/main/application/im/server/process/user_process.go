@@ -104,7 +104,7 @@ func LogoutNotice(account uint64) {
 */
 func onlineNotice(userInfo *module.UserInfo) {
 	userInfoMsg := message.Message{Type: message.OnlineNoticeType, Data: string(userInfo.Encode())}
-	userProcessMap := MyUserMgr.Select()
+	var userProcessMap = MyUserMgr.Select()
 	for _, process := range userProcessMap {
 		tf := &utils.Transfer{Conn: process.Conn}
 		err := tf.Write(userInfoMsg.Encode())

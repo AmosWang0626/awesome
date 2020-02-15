@@ -83,6 +83,12 @@ func pushProcessMsg(msg *message.Message) (err error) {
 			MyClientUserInfoMgr.Delete(account)
 		}
 
+	case message.SmsResponseType:
+		// 用户群发消息
+		smsResp := &message.SmsResponse{}
+		smsResp = smsResp.Decode([]byte(msg.Data))
+		fmt.Printf("[群发消息] %v: %v\n", smsResp.Username, smsResp.Content)
+
 	default:
 		log_utils.Warning.Println("PushProcessMsg message.Type undefined", msg)
 	}

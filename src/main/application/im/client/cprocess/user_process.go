@@ -115,11 +115,14 @@ func processMsg(msg *message.Message, conn net.Conn) (err error) {
 注册/登录成功后执行该方法
 1. 开启协程,处理服务器推送
 2. 展示登录成功后的菜单
+3. 初始化CurrentUser
 */
 func loginSuccess(conn net.Conn, userInfoStr string) {
 	//log_utils.Debug.Println("UserInfoStr", userInfoStr)
 	userInfo := &module.UserInfo{}
 	userInfo = userInfo.Decode([]byte(userInfoStr))
+	// 初始化 CurrentUser
+	MyCurrentUser = &module.CurrentUser{Conn: conn, UserInfo: userInfo}
 
 	// 注册成功, 开启一个协程, 读取服务器推送信息
 	go pushProcess(conn)

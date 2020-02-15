@@ -51,6 +51,11 @@ func (current *Processor) processMsg(msg *message.Message) (err error) {
 		up := UserProcess{Conn: current.Conn}
 		return up.userOnline()
 
+	case message.SmsRequestType:
+		//log_utils.Debug.Println("sms request", msg)
+		sp := SmsProcess{}
+		return sp.processMsg(msg)
+
 	default:
 		log_utils.Warning.Println("message.Type undefined", msg)
 		return nil
