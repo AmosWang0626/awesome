@@ -1,6 +1,6 @@
 # GO 2020
 
-> 利用2020年春节休息期间, 系统地学习golang
+> 利用2020年春节休息期间, 系统地学习golang。(武汉加油！中国加油！)
 >
 > [Golang标准库文档](https://studygolang.com/pkgdoc)
 
@@ -26,3 +26,13 @@
 > [间歇提醒休息](src/main/application/EliteTimeControl.go)
 
 ### 2.IM
+- 相关技术：tcp通讯、[自定义协议](src/main/application/im/common/utils/transfer.go)、Redis([连接池](src/main/application/im/common/utils/redis.go))
+- 已实现功能
+    - 登录
+    - 注册
+    - 退出
+    - 在线用户列表
+    - 查看所有注册用户
+- 未实现功能
+    - 点对点聊天
+    - 离线留言
