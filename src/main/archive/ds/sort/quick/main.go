@@ -1,53 +1,83 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+	"time"
+)
+
+var sortCount = 0 // 插入次数
+var swapCount = 0 // 移动数据次数
 
 // 快速排序（Quick Sort）由冒泡排序改进而得
-// 1、找一个枢轴(支点)，经过多次移动数据，确定枢轴的位置
+// 1、找一个枢轴(支点)，默认第一个，经过多次交换数据，确定枢轴的位置
 // 2、以枢轴的位置，划分左右，所有分别递归（找枢轴，确定枢轴位置，根据枢轴划分左右）
 func main() {
-	arr := &[...]int{8, 3, 2, 1, 7, 4, 6, 5}
+	arr := &[...]int{55, 56, 43, 23, 25, 31, 24, 16}
 	fmt.Printf("原始数组：%v，数组长度：%d\n", arr, len(arr))
-	sorting(0, len(arr)-1, arr)
+	QuickSorting(arr)
+
+	fmt.Println("\n随机数据执行插入排序")
+	testMany()
 }
 
-// 8, 3, 2, 1, 7, 4, 6, 5
-func sorting(left, right int, arr *[8]int) {
-	l := left
-	r := right
-	pivot := arr[(left+right)/2] // 枢轴
+// 测试时
+func testMany() {
+	t := time.Now()
 
-	for l < r {
-		// 如果想倒叙,很简单,将下边两个for大于小于切换下即可
-		for arr[l] < pivot {
-			l++
+	rand.Seed(time.Now().Unix())
+	for i := 0; i < 1000; i++ {
+		arr := &[8]int{}
+		for j := 0; j < 8; j++ {
+			arr[j] = rand.Intn(50) + 10
 		}
-		for arr[r] > pivot {
-			r--
+		fmt.Printf("原始数组：%v\t", arr)
+		sortCount = 0
+		swapCount = 0
+		QuickSorting(arr)
+	}
+
+	fmt.Println("Time Consuming", time.Since(t))
+}
+
+func QuickSorting(arr *[8]int) {
+	sort(0, len(arr)-1, arr)
+	fmt.Println("排序结果", arr, "\t比较交换次数", swapCount, "\t排序次数", sortCount)
+}
+
+// 确定枢轴位置，一分为二，左右分别递归排序
+func sort(low, high int, arr *[8]int) {
+	if low < high {
+		pivotPoint := partition(low, high, arr)
+		sort(low, pivotPoint-1, arr)
+		sort(pivotPoint+1, high, arr)
+	}
+}
+
+// 单趟排序，确定枢轴位置
+func partition(low, high int, arr *[8]int) int {
+	pivotVal := arr[low] // 默认取第一个数
+	for low < high {
+		for low < high && arr[high] >= pivotVal {
+			high--
 		}
-		if l >= r {
+		arr[low] = arr[high]
+		swapCount++
+		//fmt.Println("←---比较交换", arr)
+
+		for low < high && arr[low] <= pivotVal {
+			low++
+		}
+		if high == low { // 优化
 			break
 		}
-		arr[l], arr[r] = arr[r], arr[l]
-		if arr[l] == pivot {
-			r--
-		}
-		if arr[r] == pivot {
-			l++
-		}
+		arr[high] = arr[low]
+		swapCount++
+		//fmt.Println("比较交换---→", arr)
 	}
-	// arr := &[...]int{8, 3, 2, 1, 7, 4, 6, 5}
-	// 这个序列, 递归一次就会卡这里, 因为 l == r == 0, 需要错位才能解锁
-	if l == r {
-		l++
-		r--
-	}
-	// 左递归
-	if left < r {
-		sorting(left, r, arr)
-	}
-	// 右递归
-	if right > l {
-		sorting(l, right, arr)
-	}
+
+	arr[low] = pivotVal
+	sortCount++
+	//fmt.Println("枢轴位置确定", arr)
+	return low
 }

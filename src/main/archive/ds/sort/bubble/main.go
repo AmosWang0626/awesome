@@ -13,7 +13,7 @@ func main() {
 	// 特地找了个可以遍历7次的数组
 	arr := &[...]int{50, 43, 44, 22, 47, 50, 46, 16}
 	fmt.Printf("原始数组：%v，数组长度：%d\n", arr, len(arr))
-	sorting(arr)
+	BubbleSorting(arr)
 
 	fmt.Println("\n随机数据执行冒泡排序")
 	testMany()
@@ -21,18 +21,22 @@ func main() {
 
 // 测试时
 func testMany() {
+	t := time.Now()
+
 	rand.Seed(time.Now().Unix())
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 1000; i++ {
 		arr := &[8]int{}
 		for j := 0; j < 8; j++ {
 			arr[j] = rand.Intn(50) + 10
 		}
 		fmt.Printf("原始数组：%v\t", arr)
-		sorting(arr)
+		BubbleSorting(arr)
 	}
+
+	fmt.Println("Time Consuming", time.Since(t))
 }
 
-func sorting(arr *[8]int) {
+func BubbleSorting(arr *[8]int) {
 	sortCount := 0 // 排序次数
 	findCount := 0 // 查找次数
 

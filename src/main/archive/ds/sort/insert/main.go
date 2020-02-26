@@ -11,7 +11,7 @@ import (
 func main() {
 	arr := &[...]int{8, 3, 2, 1, 7, 4, 6, 5}
 	fmt.Printf("原始数组：%v，数组长度：%d\n", arr, len(arr))
-	sorting(arr)
+	InsertSorting(arr)
 
 	fmt.Println("\n随机数据执行插入排序")
 	testMany()
@@ -19,18 +19,22 @@ func main() {
 
 // 测试时
 func testMany() {
+	t := time.Now()
+
 	rand.Seed(time.Now().Unix())
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 1000; i++ {
 		arr := &[8]int{}
 		for j := 0; j < 8; j++ {
 			arr[j] = rand.Intn(50) + 10
 		}
 		fmt.Printf("原始数组：%v\t", arr)
-		sorting(arr)
+		InsertSorting(arr)
 	}
+
+	fmt.Println("Time Consuming", time.Since(t))
 }
 
-func sorting(arr *[8]int) {
+func InsertSorting(arr *[8]int) {
 	sortCount := 0 // 插入次数
 	findCount := 0 // 移动数据次数
 
