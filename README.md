@@ -8,6 +8,7 @@
 > src/main/archive
 
 - base >>> json、切片、指针、异常、面向对象(封装、继承、多态)
+- ds >>> [数据结构与算法](https://github.com/AmosWang0626/awesome/tree/master/src/main/archive/ds)
 - file >>> 文件操作
 - function >>> 函数
 - goroutine >>> 协程
@@ -21,7 +22,7 @@
 > src/main/application
 
 ### 1.间歇提醒休息
-> 结合《为什么精英都是时间控》 碰撞点小火花
+> 结合《为什么精英都是时间控》碰撞点小火花
 >
 > [间歇提醒休息](src/main/application/EliteTimeControl.go)
 
