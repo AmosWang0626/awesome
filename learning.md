@@ -123,3 +123,20 @@
     | 占位符 | 说明 | 举例 | 输出|
     | --- | --- | --- | --- |
     | %t  | true 或 false | Printf("%t", true) | true |
+
+## 三、编译可执行文件
+### Windows
+```shell script
+SET CGO_ENABLED=1
+SET GOARCH=
+SET GOOS=windows
+go build xxx
+```
+
+### Linux
+```shell script
+SET CGO_ENABLED=0
+SET GOARCH=amd64
+SET GOOS=linux
+go build xxx
+```
