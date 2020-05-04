@@ -24,7 +24,7 @@
 ### 1.间歇提醒休息
 > 结合《为什么精英都是时间控》碰撞点小火花
 >
-> [间歇提醒休息](src/main/application/EliteTimeControl.go)
+> [间歇提醒休息](src/main/application/elite_time/EliteTimeControl.go)
 
 ### 2.IM
 - 相关技术：tcp通讯、[自定义协议](src/main/application/im/common/utils/transfer.go)、Redis([连接池](src/main/application/im/common/utils/redis.go))
