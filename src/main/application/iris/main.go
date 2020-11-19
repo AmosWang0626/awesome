@@ -1,24 +1,49 @@
 package main
 
-import "github.com/kataras/iris/v12"
+import (
+	"amos.wang/awesome/src/main/application/im/common/utils"
+	"amos.wang/awesome/src/main/application/iris/note_dao"
+	"amos.wang/awesome/src/main/utils/log_utils"
+	"fmt"
+	"github.com/kataras/iris/v12"
+	"time"
+)
 
 func main() {
 	app := iris.Default()
 
-	// This handler will match /user/john but will not match /user/ or /user
-	app.Get("/user/{name}", func(ctx iris.Context) {
-		name := ctx.Params().Get("name")
-		ctx.Writef("Hello %s", name)
+	pool := utils.ImRedisPool()
+	conn := pool.Get()
+	note_dao.InitIrisNoteRedisDao()
+	defer conn.Close()
+	defer pool.Close()
+
+	bytes := 0
+	app.Get("/note/{title}", func(ctx iris.Context) {
+		title := ctx.Params().Get("title")
+		note, err := note_dao.IrisNoteRedisDao.Select(title)
+		if err != nil {
+			log_utils.Error.Println(err)
+		}
+
+		bytes, _ = ctx.Writef(note.Content)
+		fmt.Println("written bytes :: ", bytes)
 	})
 
-	// However, this one will match /user/john/ and also /user/john/send
-	// If no other routers match /user/john, it will redirect to /user/john/
-	app.Get("/user/{name}/{action:path}", func(ctx iris.Context) {
-		name := ctx.Params().Get("name")
-		action := ctx.Params().Get("action")
-		message := name + " is " + action
-		ctx.WriteString(message)
+	app.Get("/note/{title}/{content:path}", func(ctx iris.Context) {
+		title := ctx.Params().Get("title")
+		content := ctx.Params().Get("content")
+
+		note := &note_dao.Note{Title: title, Content: content, CreateTime: time.Now()}
+		err := note_dao.IrisNoteRedisDao.Save(note)
+		if err != nil {
+			log_utils.Error.Println(err)
+		}
+
+		message := "[" + title + "]" + " Content :: " + content
+		bytes, _ = ctx.WriteString(message)
+		fmt.Println("written bytes :: ", bytes)
 	})
 
-	app.Listen(":8080")
+	_ = app.Listen(":8080")
 }
