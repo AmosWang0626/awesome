@@ -141,9 +141,41 @@ SET GOOS=linux
 go build xxx
 ```
 
-### env
-```
+## 设置代理
+
+```shell script
+# 查看当前环境变量
 go env
+
+# 1. 天才第一步, 开启module特性, 对应java中的maven、gradle，node中的npm
+GO111MODULE=on
+
+# 2.1 设置全球代理或者阿里云代理 (二选一，推荐全球代理)
 set GOPROXY=https://goproxy.io
 set GOPROXY=https://mirrors.aliyun.com/goproxy/
 ```
+
+## GoLand 设置
+
+#### Go > Go Modules (vgo)
+
+- 启用Go模块(vgo)集成
+
+   √ `Enable Go Module (vgo) integration`
+
+- 设置代理
+
+   Proxy: `https://goproxy.io`
+
+#### Go > GOPATH
+
+- 使用系统环境中定义的GOPATH
+
+   `Use GOPATH that's defined in system environment`
+
+- 为整个 GOPATH 使用索引（强烈推荐启用）
+
+   √ `Index entire GOPATH`
+
+   禁用的话，只有项目和 vendored packages(供应商的包, 这里我理解为Go SDK吧) 会被索引。
+   它提高了整体性能，但是不能使用来自 GOPATH 的包。
