@@ -140,3 +140,10 @@ SET GOARCH=amd64
 SET GOOS=linux
 go build xxx
 ```
+
+### env
+```
+go env
+set GOPROXY=https://goproxy.io
+set GOPROXY=https://mirrors.aliyun.com/goproxy/
+```
