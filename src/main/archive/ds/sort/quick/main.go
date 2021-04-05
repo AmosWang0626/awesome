@@ -17,7 +17,7 @@ func main() {
 	fmt.Printf("原始数组：%v，数组长度：%d\n", arr, len(arr))
 	QuickSorting(arr)
 
-	fmt.Println("\n随机数据执行插入排序")
+	fmt.Println("\n随机数据执行快速排序")
 	testMany()
 }
 

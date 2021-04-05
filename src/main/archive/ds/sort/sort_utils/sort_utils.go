@@ -3,7 +3,8 @@ package sort_utils
 const ArrLength = 80000
 
 /*
-冒泡排序
+冒泡排序（稳定，平均时间复杂度 n^2）
+精髓：通过两两交换，每次确定一个最大数的位置
 */
 func BubbleSorting(arr *[ArrLength]int) {
 	length := len(arr)
@@ -24,7 +25,8 @@ func BubbleSorting(arr *[ArrLength]int) {
 }
 
 /*
-插入排序
+插入排序（稳定，平均时间复杂度 n^2）
+精髓：通过比较、交换，保证当前位置之前的元素是有序的
 */
 func InsertSorting(arr *[ArrLength]int) {
 	length := len(arr)
@@ -44,7 +46,8 @@ func InsertSorting(arr *[ArrLength]int) {
 }
 
 /*
-选择排序
+选择排序（不稳定，平均时间复杂度 n^2）
+精髓：每次确定一个最小数，然后与当前元素交换，保证当前元素之前是有序的
 */
 func SelectSorting(arr *[ArrLength]int) {
 	length := len(arr)
@@ -68,7 +71,8 @@ func SelectSorting(arr *[ArrLength]int) {
 }
 
 /*
-快速排序
+快速排序（不稳定，平均时间复杂度 n log n）
+精髓：随便找一个数字作为枢纽，然后通过交换，将小于枢纽的和大于枢纽的分隔开，每次排序确定枢纽的最终位置，采用分治的思想
 */
 func QuickSorting(arr *[ArrLength]int) {
 	sort(0, len(arr)-1, arr)
